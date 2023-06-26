@@ -10,7 +10,15 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[7.0].define(version: 2023_06_24_021119) do
+ActiveRecord::Schema[7.0].define(version: 2023_06_26_212939) do
+  create_table "adjusters", force: :cascade do |t|
+    t.string "name"
+    t.integer "item_id"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["item_id"], name: "index_adjusters_on_item_id"
+  end
+
   create_table "items", force: :cascade do |t|
     t.string "name"
     t.integer "quantity"
@@ -31,5 +39,6 @@ ActiveRecord::Schema[7.0].define(version: 2023_06_24_021119) do
     t.datetime "updated_at", null: false
   end
 
+  add_foreign_key "adjusters", "items"
   add_foreign_key "items", "orders"
 end

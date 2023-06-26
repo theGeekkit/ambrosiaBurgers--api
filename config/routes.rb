@@ -1,4 +1,5 @@
 Rails.application.routes.draw do
+  resources :adjusters
   resources :items
   resources :orders
   resources :users

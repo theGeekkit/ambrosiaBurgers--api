@@ -4,8 +4,13 @@ Rails.application.routes.draw do
   resources :drinks
   resources :adjusters
   resources :items
-  resources :orders
-  post 'payout', on: :member
+
+  resources :orders do
+    member do
+      post 'payout'
+    end
+  end
+
   resources :users
 
   post '/checkout', to: 'orders#checkout'

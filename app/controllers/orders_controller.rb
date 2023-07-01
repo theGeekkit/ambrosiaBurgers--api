@@ -20,7 +20,7 @@ class OrdersController < ApplicationController
     if order.save
 
     else
-      
+
     end
   end
 
@@ -33,6 +33,34 @@ class OrdersController < ApplicationController
     else
       render json: @order.errors, status: :unprocessable_entity
     end
+  end
+
+  def add_items_to_order
+    order = Order.new
+    order.save
+  
+    item_params = params[:items]
+    item_params.each do |item_param|
+      item = Item.new(item_param)
+      item.order = order
+      item.save
+    end
+
+    drink_params = params[:drinks]
+    drink_params.each do |drink_param|
+      drink = Drink.new(drink_param)
+      drink.order = order
+      drink.save
+    end
+  
+    custard_params = params[:custards]
+    custard_params.each do |custard_param|
+      custard = Custard.new(custard_param)
+      custard.order = order
+      custard.save
+    end
+  
+    # possibly how to do it???
   end
 
   # PATCH/PUT /orders/1

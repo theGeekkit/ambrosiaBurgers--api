@@ -13,54 +13,58 @@ class OrdersController < ApplicationController
     render json: @order
   end
 
-  def checkout
-    # Implement the checkout logic here
-    user = current_user
-    order = Order.new(user: user, status: 'pending')
-    if order.save
-
-    else
-
-    end
-  end
-
+  
   # POST /orders
   def create
     @order = Order.new(order_params)
-
+    
     if @order.save
       render json: @order, status: :created, location: @order
     else
       render json: @order.errors, status: :unprocessable_entity
     end
   end
-
+  
   def add_items_to_order
     order = Order.new
     order.save
-  
+    
     item_params = params[:items]
     item_params.each do |item_param|
       item = Item.new(item_param)
       item.order = order
       item.save
     end
-
+    
     drink_params = params[:drinks]
     drink_params.each do |drink_param|
       drink = Drink.new(drink_param)
       drink.order = order
       drink.save
     end
-  
+    
     custard_params = params[:custards]
     custard_params.each do |custard_param|
       custard = Custard.new(custard_param)
       custard.order = order
       custard.save
     end
-  
+    
     # possibly how to do it???
+  end
+
+  def checkout
+    # Implement the checkout logic here
+    user = current_user
+    order = Order.new(user: user, status: 'pending')
+    total_price = calculate_total_price(order_items_params) # Implement your own method for calculating the total price
+    order.total_price = total_price
+    
+    if order.save
+
+    else
+
+    end
   end
 
   # PATCH/PUT /orders/1

@@ -13,6 +13,17 @@ class OrdersController < ApplicationController
     render json: @order
   end
 
+  def checkout
+    # Implement the checkout logic here
+    user = current_user
+    order = Order.new(user: user, status: 'pending')
+    if order.save
+
+    else
+      
+    end
+  end
+
   # POST /orders
   def create
     @order = Order.new(order_params)

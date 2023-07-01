@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[7.0].define(version: 2023_06_26_214218) do
+ActiveRecord::Schema[7.0].define(version: 2023_07_01_153600) do
   create_table "adjusters", force: :cascade do |t|
     t.string "name"
     t.integer "item_id"
@@ -18,6 +18,14 @@ ActiveRecord::Schema[7.0].define(version: 2023_06_26_214218) do
     t.datetime "updated_at", null: false
     t.integer "price"
     t.index ["item_id"], name: "index_adjusters_on_item_id"
+  end
+
+  create_table "drinks", force: :cascade do |t|
+    t.string "name"
+    t.integer "order_id", null: false
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["order_id"], name: "index_drinks_on_order_id"
   end
 
   create_table "items", force: :cascade do |t|
@@ -39,8 +47,10 @@ ActiveRecord::Schema[7.0].define(version: 2023_06_26_214218) do
   create_table "users", force: :cascade do |t|
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
+    t.string "register"
   end
 
   add_foreign_key "adjusters", "items"
+  add_foreign_key "drinks", "orders"
   add_foreign_key "items", "orders"
 end

@@ -1,4 +1,6 @@
 Rails.application.routes.draw do
+  resources :custard_adjusters
+  resources :custards
   resources :drinks
   resources :adjusters
   resources :items

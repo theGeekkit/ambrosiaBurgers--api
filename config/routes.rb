@@ -5,6 +5,7 @@ Rails.application.routes.draw do
   resources :adjusters
   resources :items
   resources :orders
+  post 'payout', on: :member
   resources :users
 
   post '/checkout', to: 'orders#checkout'

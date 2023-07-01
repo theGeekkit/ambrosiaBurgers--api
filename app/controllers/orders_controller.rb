@@ -57,15 +57,32 @@ class OrdersController < ApplicationController
     # Implement the checkout logic here
     user = current_user
     order = Order.new(user: user, status: 'pending')
-    total_price = calculate_total_price(order_items_params) # Implement your own method for calculating the total price
-    order.total_price = total_price
-    
-    if order.save
+  # Calculate the total price based on associated models
+  total_price = order.items.sum(:price) +
+                order.adjusters.sum(:price) +
+                order.drinks.sum(:price) +
+                order.custards.sum(:price) +
+                order.custard_adjusters.sum(:price)
+  
+  order.total_price = total_price
 
+  if order.save
+    redirect_to payout_order_path(order)
     else
 
     end
   end
+
+  def payout
+    @order = Order.find(params[:id])
+    @order.status = 'closed'
+    if @order.save
+      # Handle successful order closure, e.g., display a success message or redirect to a confirmation page
+    else
+      # Handle failed order closure, e.g., display an error message or redirect to an error page
+    end
+  end
+end
 
   # PATCH/PUT /orders/1
   def update

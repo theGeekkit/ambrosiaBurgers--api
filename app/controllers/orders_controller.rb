@@ -55,19 +55,27 @@ class OrdersController < ApplicationController
 
   def checkout
     # Implement the checkout logic here
+
+      @order = Order.new(order_params)
+
+
     user = current_user
-    order = Order.new(user: user, status: 'pending')
+    # order = Order.new(user: user, status: 'pending')
   # Calculate the total price based on associated models
-  total_price = order.items.sum(:price) +
-                order.adjusters.sum(:price) +
-                order.drinks.sum(:price) +
-                order.custards.sum(:price) +
-                order.custard_adjusters.sum(:price)
+  total_price = @order.items.sum(:price) +
+                @order.adjusters.sum(:price) +
+                @order.drinks.sum(:price) +
+                @order.custards.sum(:price) +
+                @order.custard_adjusters.sum(:price)
   
   order.total_price = total_price
+  @return_data = [user,order,total_price]
+  render json: @return_data
 
   if order.save
     redirect_to payout_order_path(order)
+
+
     else
 
     end
@@ -87,7 +95,7 @@ end
   # PATCH/PUT /orders/1
   def update
     if @order.update(order_params)
-      render json: @order
+      render json:@order
     else
       render json: @order.errors, status: :unprocessable_entity
     end

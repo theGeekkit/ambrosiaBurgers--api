@@ -1,5 +1,5 @@
 class OrdersController < ApplicationController
-  before_action :set_order, only: %i[ show update destroy ]
+  before_action :set_order, only: %i[ show update destroy checkout]
 
   # GET /orders
   def index
@@ -69,7 +69,7 @@ class OrdersController < ApplicationController
                 @order.custard_adjusters.sum(:price)
   
   order.total_price = total_price
-  @return_data = [user,order,total_price]
+  @return_data = [user, order, total_price]
   render json: @return_data
 
   if order.save
@@ -114,6 +114,6 @@ end
 
     # Only allow a list of trusted parameters through.
     def order_params
-      params.require(:order).permit(:name)
+      params.require(:order).permit(:items, :adjusters, :drinks, :custard, :custard_adjusters, :total_price)
     end
 end

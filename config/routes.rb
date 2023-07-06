@@ -11,7 +11,9 @@ Rails.application.routes.draw do
     end
   end
 
-  resources :users
+  resources :users, param: :_username
+  post '/auth/login', to: 'authentication#login'
+  get '/*a', to: 'application#not_found'
 
   post '/checkout', to: 'orders#checkout'
 
